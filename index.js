@@ -7,6 +7,24 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+
+const URL = "https://wicikibackendcall.onrender.com/ping";
+function scheduleRandomPing() {
+    const minutes = Math.floor(Math.random() * 11) + 5; // every 5–15 mins
+    cron.schedule(`*/${minutes} * * * *`, async () => {
+        try {
+            await fetch(URL);
+            console.log("pinged");
+        } catch (e) {
+            console.error("ping failed", e.message);
+        }
+    });
+}
+scheduleRandomPing();
+
+
+
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: true
